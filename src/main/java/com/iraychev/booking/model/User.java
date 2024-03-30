@@ -1,5 +1,6 @@
 package com.iraychev.booking.model;
 
+import com.iraychev.booking.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +27,9 @@ public class User {
     @Column(name = "first_name")
     private String firstName;
 
+    @Column(name = "user_role")
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
     @Column(name = "last_name")
     private String lastName;
 
