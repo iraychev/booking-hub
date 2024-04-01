@@ -1,4 +1,4 @@
-package com.iraychev.booking;
+package com.iraychev.booking.enums;
 
 public enum UserRole {
     ADMIN,

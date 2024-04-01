@@ -1,5 +1,6 @@
 package com.iraychev.booking.DTO;
 
+import com.iraychev.booking.enums.UserRole;
 import com.iraychev.booking.model.Listing;
 
 import lombok.Getter;
@@ -17,5 +18,6 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String email;
+    private UserRole role;
     private List<Listing> listings;
 }

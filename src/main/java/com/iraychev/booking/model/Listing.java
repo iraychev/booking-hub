@@ -1,5 +1,6 @@
 package com.iraychev.booking.model;
 
+import com.iraychev.booking.enums.Amenity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,4 +32,6 @@ public class Listing {
     @OneToMany(mappedBy = "listing")
     private List<Booking> bookings;
 
+    @Enumerated(EnumType.STRING)
+    private List<Amenity> amenities;
 }

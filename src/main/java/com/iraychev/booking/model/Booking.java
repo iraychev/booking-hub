@@ -23,11 +23,11 @@ public class Booking {
     private User owner; // Property owner
 
     @ManyToOne
-    @JoinColumn(name = "listing_id")
-    private Listing listing;
+    private User renter;
 
     @ManyToOne
-    private User renter;
+    @JoinColumn(name = "listing_id")
+    private Listing listing;
 
     @Column(name = "start_date")
     private LocalDate startDate;

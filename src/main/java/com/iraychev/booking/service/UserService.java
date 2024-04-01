@@ -51,8 +51,7 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             User existingUser = userOptional.get();
-            existingUser.setUsername(userDTO.getUsername());
-            existingUser.setEmail(userDTO.getEmail());
+            modelMapper.map(userDTO, existingUser);
             User updatedUser = userRepository.save(existingUser);
             return modelMapper.map(updatedUser, UserDTO.class);
         }

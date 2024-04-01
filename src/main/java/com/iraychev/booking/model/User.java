@@ -1,6 +1,6 @@
 package com.iraychev.booking.model;
 
-import com.iraychev.booking.UserRole;
+import com.iraychev.booking.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,16 +22,17 @@ public class User {
 
     private String username;
     private String password;
-    private String email;
 
     @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
+
+    private String email;
 
     @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    @Column(name = "last_name")
-    private String lastName;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Listing> listings;
