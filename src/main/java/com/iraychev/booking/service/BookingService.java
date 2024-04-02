@@ -1,6 +1,7 @@
 package com.iraychev.booking.service;
 
 import com.iraychev.booking.DTO.BookingDTO;
+import com.iraychev.booking.exception.BookingDateOverlapException;
 import com.iraychev.booking.model.Booking;
 import com.iraychev.booking.repository.BookingRepository;
 import org.apache.coyote.Response;
@@ -27,15 +28,14 @@ public class BookingService {
         this.modelMapper = modelMapper;
     }
 
-    public ResponseEntity<BookingDTO> createBooking(BookingDTO bookingDTO) {
+    public BookingDTO createBooking(BookingDTO bookingDTO) {
 
         if(!canMakeBooking(bookingDTO)){
-            return ResponseEntity.badRequest().body(new BookingDTO());
+            throw new BookingDateOverlapException("Booking date overlaps with existing booking/s");
         }
         Booking booking = modelMapper.map(bookingDTO, Booking.class);
         Booking savedBooking = bookingRepository.save(booking);
-        BookingDTO savedBookingDTO = modelMapper.map(savedBooking, BookingDTO.class);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedBookingDTO);
+        return modelMapper.map(savedBooking, BookingDTO.class);
     }
 
     public boolean canMakeBooking(BookingDTO bookingDTO) {
@@ -64,7 +64,10 @@ public class BookingService {
         return bookingOptional.map(booking -> modelMapper.map(booking, BookingDTO.class)).orElse(null);
     }
 
-    public ResponseEntity<BookingDTO> updateBookingById(UUID bookingId, BookingDTO bookingDTO) {
+    public BookingDTO updateBookingById(UUID bookingId, BookingDTO bookingDTO) {
+        if(!canMakeBooking(bookingDTO)){
+            throw new BookingDateOverlapException("Booking date overlaps with existing booking/s");
+        }
         Optional<Booking> bookingOptional = bookingRepository.findById(bookingId);
         if (bookingOptional.isEmpty()) {
             return null;
@@ -75,8 +78,7 @@ public class BookingService {
         existingBooking.setPrice(bookingDTO.getPrice());
 
         Booking updatedBooking = bookingRepository.save(existingBooking);
-        BookingDTO updatedBookingDTO = modelMapper.map(updatedBooking, BookingDTO.class);
-        return ResponseEntity.status(HttpStatus.CREATED).body(updatedBookingDTO);
+        return modelMapper.map(updatedBooking, BookingDTO.class);
     }
 
     public boolean deleteBookingById(UUID bookingId) {

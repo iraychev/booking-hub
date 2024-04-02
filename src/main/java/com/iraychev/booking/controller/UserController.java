@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class UserController implements Controller<UserDTO>{
 
     private final UserService userService;
 
@@ -22,19 +22,19 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO) {
         UserDTO createdUser = userService.createUser(userDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
+    public ResponseEntity<List<UserDTO>> getAll() {
         List<UserDTO> users = userService.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable UUID userId) {
+    public ResponseEntity<UserDTO> getById(@PathVariable UUID userId) {
         UserDTO userDTO = userService.getUserById(userId);
         if (userDTO != null) {
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable UUID userId, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> update(@PathVariable UUID userId, @RequestBody UserDTO userDTO) {
         UserDTO updatedUser = userService.updateUserById(userId, userDTO);
         if (updatedUser != null) {
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID userId) {
+    public ResponseEntity<Void> delete(@PathVariable UUID userId) {
         if (userService.deleteUserById(userId)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {

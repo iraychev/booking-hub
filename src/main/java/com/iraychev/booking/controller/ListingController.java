@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/listings")
-public class ListingController {
+public class ListingController implements Controller<ListingDTO>{
     private final ListingService listingService;
 
     @Autowired
@@ -21,21 +21,19 @@ public class ListingController {
     }
 
     @PostMapping
-    public ResponseEntity<ListingDTO> createListing(@RequestBody ListingDTO listingDTO) {
-        ListingDTO createdListing;
-        createdListing = listingService.createListing(listingDTO);
-        ResponseEntity<ListingDTO> listingDTOResponseEntity = new ResponseEntity<>(createdListing, HttpStatus.CREATED);
-        return listingDTOResponseEntity;
+    public ResponseEntity<ListingDTO> create(@RequestBody ListingDTO listingDTO) {
+        ListingDTO createdListing = listingService.createListing(listingDTO);;
+        return new ResponseEntity<>(createdListing, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<ListingDTO>> getAllListings() {
+    public ResponseEntity<List<ListingDTO>> getAll() {
         List<ListingDTO> listings = listingService.getAllListings();
         return new ResponseEntity<>(listings, HttpStatus.OK);
     }
 
     @GetMapping("/{listingId}")
-    public ResponseEntity<ListingDTO> getListingById(@PathVariable UUID listingId) {
+    public ResponseEntity<ListingDTO> getById(@PathVariable UUID listingId) {
         ListingDTO listingDTO = listingService.getListingById(listingId);
         if (listingDTO != null) {
             return new ResponseEntity<>(listingDTO, HttpStatus.OK);
@@ -45,7 +43,7 @@ public class ListingController {
     }
 
     @PutMapping("/{listingId}")
-    public ResponseEntity<ListingDTO> updateListing(@PathVariable UUID listingId, @RequestBody ListingDTO listingDTO) {
+    public ResponseEntity<ListingDTO> update(@PathVariable UUID listingId, @RequestBody ListingDTO listingDTO) {
         ListingDTO updatedListing = listingService.updateListingById(listingId, listingDTO);
         if (updatedListing != null) {
             return new ResponseEntity<>(updatedListing, HttpStatus.OK);
@@ -55,7 +53,7 @@ public class ListingController {
     }
 
     @DeleteMapping("/{listingId}")
-    public ResponseEntity<Void> deleteListing(@PathVariable UUID listingId) {
+    public ResponseEntity<Void> delete(@PathVariable UUID listingId) {
         if (listingService.deleteListingById(listingId)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {

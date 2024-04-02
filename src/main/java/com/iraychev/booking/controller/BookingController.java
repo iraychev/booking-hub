@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/bookings")
-public class BookingController {
+public class BookingController implements Controller<BookingDTO>{
     private final BookingService bookingService;
 
     @Autowired
@@ -21,19 +21,19 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<BookingDTO> createBooking(@RequestBody BookingDTO bookingDTO) {
-        ResponseEntity<BookingDTO> response = bookingService.createBooking(bookingDTO);
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    public ResponseEntity<BookingDTO> create(@RequestBody BookingDTO bookingDTO) {
+        BookingDTO createdBooking = bookingService.createBooking(bookingDTO);
+        return new ResponseEntity<>(createdBooking, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<BookingDTO>> getAllBookings() {
+    public ResponseEntity<List<BookingDTO>> getAll() {
         List<BookingDTO> bookings = bookingService.getAllBookings();
         return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
 
     @GetMapping("/{bookingId}")
-    public ResponseEntity<BookingDTO> getBookingById(@PathVariable UUID bookingId) {
+    public ResponseEntity<BookingDTO> getById(@PathVariable UUID bookingId) {
         BookingDTO bookingDTO = bookingService.getBookingById(bookingId);
         if (bookingDTO != null) {
             return new ResponseEntity<>(bookingDTO, HttpStatus.OK);
@@ -43,14 +43,18 @@ public class BookingController {
     }
 
     @PutMapping("/{bookingId}")
-    public ResponseEntity<BookingDTO> updateBooking(@PathVariable UUID bookingId, @RequestBody BookingDTO bookingDTO) {
-        ResponseEntity<BookingDTO> response = bookingService.updateBookingById(bookingId, bookingDTO);
+    public ResponseEntity<BookingDTO> update(@PathVariable UUID bookingId, @RequestBody BookingDTO bookingDTO) {
+        BookingDTO updatedBooking = bookingService.updateBookingById(bookingId, bookingDTO);
 
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+        if (updatedBooking != null) {
+            return new ResponseEntity<>(updatedBooking, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{bookingId}")
-    public ResponseEntity<Void> deleteBooking(@PathVariable UUID bookingId) {
+    public ResponseEntity<Void> delete(@PathVariable UUID bookingId) {
         if (bookingService.deleteBookingById(bookingId)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {

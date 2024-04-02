@@ -35,7 +35,7 @@ public class UserControllerTests {
 
         when(userService.createUser(newUser)).thenReturn(newUser);
 
-        ResponseEntity<UserDTO> response = userController.createUser(newUser);
+        ResponseEntity<UserDTO> response = userController.create(newUser);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(newUser, response.getBody());
     }
@@ -46,7 +46,7 @@ public class UserControllerTests {
 
         when(userService.getAllUsers()).thenReturn(users);
 
-        ResponseEntity<List<UserDTO>> response = userController.getAllUsers();
+        ResponseEntity<List<UserDTO>> response = userController.getAll();
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(users, response.getBody());
     }
@@ -59,7 +59,7 @@ public class UserControllerTests {
 
         when(userService.getUserById(userId)).thenReturn(user);
 
-        ResponseEntity<UserDTO> response = userController.getUserById(userId);
+        ResponseEntity<UserDTO> response = userController.getById(userId);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(user, response.getBody());
     }
@@ -77,7 +77,7 @@ public class UserControllerTests {
 
         when(userService.updateUserById(userId,updatedUserDetails)).thenReturn(existingUser);
 
-        ResponseEntity<UserDTO> response = userController.updateUser(userId, updatedUserDetails);
+        ResponseEntity<UserDTO> response = userController.update(userId, updatedUserDetails);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class UserControllerTests {
 
         when(userService.deleteUserById(userId)).thenReturn(true);
 
-        ResponseEntity<Void> response = userController.deleteUser(userId);
+        ResponseEntity<Void> response = userController.delete(userId);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 
