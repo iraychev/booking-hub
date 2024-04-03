@@ -4,11 +4,8 @@ import com.iraychev.booking.DTO.BookingDTO;
 import com.iraychev.booking.exception.BookingDateOverlapException;
 import com.iraychev.booking.model.Booking;
 import com.iraychev.booking.repository.BookingRepository;
-import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,7 +27,7 @@ public class BookingService {
 
     public BookingDTO createBooking(BookingDTO bookingDTO) {
 
-        if(!canMakeBooking(bookingDTO)){
+        if(cannotMakeBooking(bookingDTO)){
             throw new BookingDateOverlapException("Booking date overlaps with existing booking/s");
         }
         Booking booking = modelMapper.map(bookingDTO, Booking.class);
@@ -38,7 +35,7 @@ public class BookingService {
         return modelMapper.map(savedBooking, BookingDTO.class);
     }
 
-    public boolean canMakeBooking(BookingDTO bookingDTO) {
+    public boolean cannotMakeBooking(BookingDTO bookingDTO) {
         LocalDate endDate = bookingDTO.getStartDate().plusDays(bookingDTO.getNightsToStay() - 1);
 
         List<Booking> existingBookings = bookingRepository.findByListingId(bookingDTO.getListing().getId());
@@ -47,10 +44,10 @@ public class BookingService {
             LocalDate existingEndDate = existingBooking.getStartDate().plusDays(existingBooking.getNightsToStay() - 1);
 
             if (!(endDate.isBefore(existingBooking.getStartDate()) || existingBooking.getStartDate().isAfter(existingEndDate))){
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
     public List<BookingDTO> getAllBookings() {
         List<Booking> bookings = bookingRepository.findAll();
@@ -65,7 +62,7 @@ public class BookingService {
     }
 
     public BookingDTO updateBookingById(UUID bookingId, BookingDTO bookingDTO) {
-        if(!canMakeBooking(bookingDTO)){
+        if(cannotMakeBooking(bookingDTO)){
             throw new BookingDateOverlapException("Booking date overlaps with existing booking/s");
         }
         Optional<Booking> bookingOptional = bookingRepository.findById(bookingId);

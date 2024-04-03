@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/bookings")
+@RequestMapping("/booking-api/bookings")
 public class BookingController implements Controller<BookingDTO>{
     private final BookingService bookingService;
 

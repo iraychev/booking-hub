@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/listings")
+@RequestMapping("/booking-api/listings")
 public class ListingController implements Controller<ListingDTO>{
     private final ListingService listingService;
 
@@ -22,7 +22,7 @@ public class ListingController implements Controller<ListingDTO>{
 
     @PostMapping
     public ResponseEntity<ListingDTO> create(@RequestBody ListingDTO listingDTO) {
-        ListingDTO createdListing = listingService.createListing(listingDTO);;
+        ListingDTO createdListing = listingService.createListing(listingDTO);
         return new ResponseEntity<>(createdListing, HttpStatus.CREATED);
     }
 

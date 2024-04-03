@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/booking-api/users")
 public class UserController implements Controller<UserDTO>{
 
     private final UserService userService;
