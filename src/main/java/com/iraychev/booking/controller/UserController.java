@@ -2,6 +2,7 @@ package com.iraychev.booking.controller;
 
 import com.iraychev.booking.DTO.UserDTO;
 import com.iraychev.booking.service.UserService;
+import com.iraychev.booking.validators.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +16,18 @@ import java.util.UUID;
 public class UserController implements Controller<UserDTO>{
 
     private final UserService userService;
-
+    private final UserValidator userValidator;
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserValidator userValidator) {
         this.userService = userService;
+        this.userValidator = userValidator;
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> create(@RequestBody UserDTO userDTO) {
+        if (!userValidator.isValidUser(userDTO)) {
+            return ResponseEntity.badRequest().body("Invalid user data");
+        }
         UserDTO createdUser = userService.createUser(userDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
@@ -44,7 +49,10 @@ public class UserController implements Controller<UserDTO>{
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDTO> update(@PathVariable UUID userId, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> update(@PathVariable UUID userId, @RequestBody UserDTO userDTO) {
+        if (!userValidator.isValidUser(userDTO)) {
+            return ResponseEntity.badRequest().body("Invalid user data");
+        }
         UserDTO updatedUser = userService.updateUserById(userId, userDTO);
         if (updatedUser != null) {
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);

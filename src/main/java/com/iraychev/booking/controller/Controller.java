@@ -10,17 +10,17 @@ import java.util.UUID;
 public interface Controller<T> {
 
     @GetMapping
-    public abstract ResponseEntity<List<T>> getAll();
+    ResponseEntity<List<T>> getAll();
 
     @GetMapping("/{id}")
-    public abstract ResponseEntity<T> getById(@PathVariable UUID id);
+    ResponseEntity<T> getById(@PathVariable UUID id);
 
     @PostMapping
-    public abstract ResponseEntity<T> create(@RequestBody T entity);
+    ResponseEntity<?> create(@RequestBody T entity);
 
     @PutMapping("/{id}")
-    public abstract ResponseEntity<T> update(@PathVariable UUID id, @RequestBody T entity);
+    ResponseEntity<?> update(@PathVariable UUID id, @RequestBody T entity);
 
     @DeleteMapping("/{id}")
-    public abstract ResponseEntity<Void> delete(@PathVariable UUID id);
+    ResponseEntity<Void> delete(@PathVariable UUID id);
 }

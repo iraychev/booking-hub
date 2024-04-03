@@ -21,7 +21,7 @@ public class ListingController implements Controller<ListingDTO>{
     }
 
     @PostMapping
-    public ResponseEntity<ListingDTO> create(@RequestBody ListingDTO listingDTO) {
+    public ResponseEntity<?> create(@RequestBody ListingDTO listingDTO) {
         ListingDTO createdListing = listingService.createListing(listingDTO);
         return new ResponseEntity<>(createdListing, HttpStatus.CREATED);
     }
@@ -43,7 +43,7 @@ public class ListingController implements Controller<ListingDTO>{
     }
 
     @PutMapping("/{listingId}")
-    public ResponseEntity<ListingDTO> update(@PathVariable UUID listingId, @RequestBody ListingDTO listingDTO) {
+    public ResponseEntity<?> update(@PathVariable UUID listingId, @RequestBody ListingDTO listingDTO) {
         ListingDTO updatedListing = listingService.updateListingById(listingId, listingDTO);
         if (updatedListing != null) {
             return new ResponseEntity<>(updatedListing, HttpStatus.OK);

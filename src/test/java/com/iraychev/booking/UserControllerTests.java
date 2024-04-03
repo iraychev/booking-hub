@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +34,7 @@ public class UserControllerTests {
 
         when(userService.createUser(newUser)).thenReturn(newUser);
 
-        ResponseEntity<UserDTO> response = userController.create(newUser);
+        ResponseEntity<?> response = userController.create(newUser);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(newUser, response.getBody());
     }
@@ -75,9 +74,11 @@ public class UserControllerTests {
         UserDTO updatedUserDetails = new UserDTO();
         updatedUserDetails.setUsername("updatedUser");
 
-        when(userService.updateUserById(userId,updatedUserDetails)).thenReturn(existingUser);
+        when(userService.updateUserById(userId,updatedUserDetails)).thenReturn(updatedUserDetails);
 
-        ResponseEntity<UserDTO> response = userController.update(userId, updatedUserDetails);
+        ResponseEntity<?> response = userController.update(userId, updatedUserDetails);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(updatedUserDetails, response.getBody());
     }
 
     @Test

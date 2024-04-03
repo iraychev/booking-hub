@@ -21,7 +21,7 @@ public class BookingController implements Controller<BookingDTO>{
     }
 
     @PostMapping
-    public ResponseEntity<BookingDTO> create(@RequestBody BookingDTO bookingDTO) {
+    public ResponseEntity<?> create(@RequestBody BookingDTO bookingDTO) {
         BookingDTO createdBooking = bookingService.createBooking(bookingDTO);
         return new ResponseEntity<>(createdBooking, HttpStatus.CREATED);
     }
@@ -43,7 +43,7 @@ public class BookingController implements Controller<BookingDTO>{
     }
 
     @PutMapping("/{bookingId}")
-    public ResponseEntity<BookingDTO> update(@PathVariable UUID bookingId, @RequestBody BookingDTO bookingDTO) {
+    public ResponseEntity<?> update(@PathVariable UUID bookingId, @RequestBody BookingDTO bookingDTO) {
         BookingDTO updatedBooking = bookingService.updateBookingById(bookingId, bookingDTO);
 
         if (updatedBooking != null) {

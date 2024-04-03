@@ -20,7 +20,9 @@ public class User {
     @GeneratedValue
     private UUID id;
 
+    @Column(nullable = false)
     private String username;
+    @Column(nullable = false)
     private String password;
 
     @Column(name = "first_name")
@@ -28,9 +30,10 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(nullable = false)
     private String email;
 
-    @Column(name = "user_role")
+    @Column(name = "user_role", nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
 

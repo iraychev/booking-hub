@@ -26,13 +26,13 @@ public class Booking {
     private User renter;
 
     @ManyToOne
-    @JoinColumn(name = "listing_id")
+    @JoinColumn(name = "listing_id", nullable = false)
     private Listing listing;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
-    @Column(name = "nights_to_stay")
+    @Column(name = "nights_to_stay", nullable = false)
     private int nightsToStay;
 
     private double price;

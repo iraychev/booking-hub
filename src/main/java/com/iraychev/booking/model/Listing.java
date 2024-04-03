@@ -23,10 +23,15 @@ public class Listing {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @Column(nullable = false)
     private String title;
+
     private String description;
-    @Column(name = "property_address")
+
+    @Column(name = "property_address", nullable = false)
     private String propertyAddress;
+
     private double price;
 
     @OneToMany(mappedBy = "listing")
