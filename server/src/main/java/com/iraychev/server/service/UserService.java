@@ -5,6 +5,7 @@ import com.iraychev.model.entities.User;
 import com.iraychev.server.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(userId);
         return userOptional.map(user -> modelMapper.map(user, UserDTO.class)).orElse(null);
     }
-
+    @PreAuthorize("hasRole('ADMIN') or (authentication.principal.id == #userId)")
     public UserDTO updateUserById(UUID userId, UserDTO userDTO) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
@@ -57,7 +58,7 @@ public class UserService {
         }
         return null;
     }
-
+    @PreAuthorize("hasRole('ADMIN') or (authentication.principal.id == #userId)")
     public boolean deleteUserById(UUID userId) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {

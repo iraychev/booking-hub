@@ -1,7 +1,6 @@
 package com.iraychev.model.DTO;
 
 import com.iraychev.model.enums.Amenity;
-import com.iraychev.model.entities.Booking;
 import com.iraychev.model.entities.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +16,5 @@ public class ListingDTO {
     private String description;
     private String propertyAddress;
     private double price;
-    private List<Booking> bookings;
     private List<Amenity> amenities;
 }

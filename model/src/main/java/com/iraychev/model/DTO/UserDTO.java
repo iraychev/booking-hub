@@ -1,12 +1,11 @@
 package com.iraychev.model.DTO;
 
 import com.iraychev.model.enums.UserRole;
-import com.iraychev.model.entities.Listing;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter @Setter
@@ -18,6 +17,5 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private UserRole role;
-    private List<Listing> listings;
+    private Set<UserRole> roles;
 }

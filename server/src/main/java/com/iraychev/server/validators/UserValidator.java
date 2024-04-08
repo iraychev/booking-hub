@@ -4,6 +4,7 @@ import com.iraychev.model.DTO.UserDTO;
 
 import java.util.regex.Pattern;
 
+
 @SuppressWarnings("BooleanMethodIsAlwaysInverted")
 public class UserValidator {
 

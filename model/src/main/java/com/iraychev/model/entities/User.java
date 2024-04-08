@@ -6,8 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -33,11 +32,7 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @Column(name = "user_role", nullable = false)
+    @ElementCollection(targetClass = UserRole.class)
     @Enumerated(EnumType.STRING)
-    private UserRole role;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Listing> listings;
-
+    private Set<UserRole> roles = new HashSet<>();
 }

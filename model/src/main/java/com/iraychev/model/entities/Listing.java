@@ -34,11 +34,8 @@ public class Listing {
 
     private double price;
 
-    @OneToMany(mappedBy = "listing")
-    private List<Booking> bookings;
-
     @ElementCollection(targetClass = Amenity.class)
-    @CollectionTable(name = "entity_amenities", joinColumns = @JoinColumn(name = "entity_id"))
+    @CollectionTable(name = "listing_amenities", joinColumns = @JoinColumn(name = "listing_id"))
     @Column(name = "amenity")
     @Enumerated(EnumType.STRING)
     private List<Amenity> amenities;

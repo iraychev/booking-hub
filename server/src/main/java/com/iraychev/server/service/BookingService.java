@@ -6,6 +6,7 @@ import com.iraychev.model.entities.Booking;
 import com.iraychev.server.repository.BookingRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ public class BookingService {
         this.modelMapper = modelMapper;
     }
 
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('RENTER'))")
     public BookingDTO createBooking(BookingDTO bookingDTO) {
 
         if(cannotMakeBooking(bookingDTO)){
@@ -60,6 +62,7 @@ public class BookingService {
         Optional<Booking> bookingOptional = bookingRepository.findById(bookingId);
         return bookingOptional.map(booking -> modelMapper.map(booking, BookingDTO.class)).orElse(null);
     }
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('RENTER') and @userSecurityService.canAccessBooking(principal, #bookingId))")
 
     public BookingDTO updateBookingById(UUID bookingId, BookingDTO bookingDTO) {
         if(cannotMakeBooking(bookingDTO)){
@@ -77,6 +80,8 @@ public class BookingService {
         Booking updatedBooking = bookingRepository.save(existingBooking);
         return modelMapper.map(updatedBooking, BookingDTO.class);
     }
+
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('RENTER') and @userSecurityService.canAccessBooking(principal, #bookingId))")
 
     public boolean deleteBookingById(UUID bookingId) {
         Optional<Booking> bookingOptional = bookingRepository.findById(bookingId);
