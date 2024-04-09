@@ -8,8 +8,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -17,15 +21,28 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException(username);
+
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isEmpty()) {
+            throw new UsernameNotFoundException(username+ " not found");
         }
 
+        User user = userOptional.get();
 
+        List<String> roles = user.getRoles().stream()
+                .map(Enum::name)
+                .toList();
 
-        return new org.springframework.security.core.userdetails.User(user.get().getUsername(), user.get().getPassword(), Collections.emptyList());
+        logger.info("User details loaded successfully for username: {}. Roles: {}", username, roles);
+
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getUsername())
+                .password(user.getPassword())
+                .roles(roles.toArray(new String[0]))
+                .build();
     }
 }

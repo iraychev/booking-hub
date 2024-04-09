@@ -32,7 +32,7 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @ElementCollection(targetClass = UserRole.class)
+    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles = new HashSet<>();
 }
