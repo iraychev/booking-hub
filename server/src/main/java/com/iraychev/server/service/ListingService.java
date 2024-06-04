@@ -24,7 +24,7 @@ public class ListingService {
         this.listingRepository = listingRepository;
         this.modelMapper = modelMapper;
     }
-//@PreAuthorize("hasRole('ADMIN') or (hasRole('PROPERTY_OWNER'))")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('PROPERTY_OWNER'))")
     public ListingDTO createListing(ListingDTO listingDTO) {
         Listing listing = modelMapper.map(listingDTO, Listing.class);
         Listing savedListing = listingRepository.save(listing);

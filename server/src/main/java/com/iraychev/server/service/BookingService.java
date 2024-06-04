@@ -37,7 +37,7 @@ public class BookingService {
         return modelMapper.map(savedBooking, BookingDTO.class);
     }
 
-    public boolean cannotMakeBooking(BookingDTO bookingDTO) {
+    private boolean cannotMakeBooking(BookingDTO bookingDTO) {
         LocalDate endDate = bookingDTO.getStartDate().plusDays(bookingDTO.getNightsToStay() - 1);
 
         List<Booking> existingBookings = bookingRepository.findByListingId(bookingDTO.getListing().getId());
