@@ -48,7 +48,7 @@ public class UserController implements Controller<UserDTO>{
         }
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/username/{username}")
     public ResponseEntity<UserDTO> getByUsername(@PathVariable String username) {
         UserDTO userDTO = userService.getUserByUsername(username);
         if (userDTO != null) {
