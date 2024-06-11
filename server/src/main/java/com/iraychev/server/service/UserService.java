@@ -55,10 +55,10 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             User existingUser = userOptional.get();
+            modelMapper.map(userDTO, existingUser);
             if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
                 existingUser.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
             }
-            modelMapper.map(userDTO, existingUser);
             User updatedUser = userRepository.save(existingUser);
             return modelMapper.map(updatedUser, UserDTO.class);
         }
