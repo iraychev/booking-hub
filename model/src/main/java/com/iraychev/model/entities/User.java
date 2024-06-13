@@ -32,6 +32,10 @@ public class User {
     @Column(nullable = false)
     private String email;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name ="image_id", referencedColumnName = "id")
+    private Image profileImage;
+
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles = new HashSet<>();

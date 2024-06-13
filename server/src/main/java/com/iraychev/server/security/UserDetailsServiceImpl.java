@@ -3,6 +3,7 @@ package com.iraychev.server.security;
 import com.iraychev.model.entities.User;
 import com.iraychev.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (userOptional.isEmpty()) {
-            throw new UsernameNotFoundException(username+ " not found");
+            throw new UsernameNotFoundException(username + " not found");
         }
 
         User user = userOptional.get();
@@ -37,12 +38,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .map(Enum::name)
                 .toList();
 
-        logger.info("User details loaded successfully for username: {}. Roles: {}", username, roles);
+        logger.info("User details loaded successfully for username: {}. OD: {} Roles: {}", username, user.getId(), roles);
 
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
-                .password(user.getPassword())
-                .roles(roles.toArray(new String[0]))
-                .build();
+        return new CustomUserDetails(user.getId(), user.getUsername(), user.getPassword(), AuthorityUtils.createAuthorityList(roles.toArray(new String[0])));
     }
 }

@@ -3,7 +3,10 @@ package com.iraychev.server.service;
 import com.iraychev.model.DTO.UserDTO;
 import com.iraychev.model.entities.User;
 import com.iraychev.server.repository.UserRepository;
+import com.iraychev.server.security.UserDetailsServiceImpl;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +22,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+
     @Autowired
     public UserService(UserRepository userRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder){
         this.userRepository = userRepository;
@@ -50,7 +55,7 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(userId);
         return userOptional.map(user -> modelMapper.map(user, UserDTO.class)).orElse(null);
     }
-    @PreAuthorize("hasRole('ADMIN') or (authentication.principal.id == #userId)")
+    @PreAuthorize("hasRole('ADMIN') or (authentication.getPrincipal().getId() == #userId)")
     public UserDTO updateUserById(UUID userId, UserDTO userDTO) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
@@ -64,8 +69,9 @@ public class UserService {
         }
         return null;
     }
-    @PreAuthorize("hasRole('ADMIN') or (authentication.principal.id == #userId)")
+    @PreAuthorize("hasRole('ADMIN') or (authentication.getPrincipal().getId() == #userId)")
     public boolean deleteUserById(UUID userId) {
+
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             userRepository.delete(userOptional.get());

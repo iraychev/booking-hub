@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +29,11 @@ public class Listing {
     private String title;
 
     private String description;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "listing_id")
+    private List<Image> images = new ArrayList<>();
+
 
     @Column(name = "property_address", nullable = false)
     private String propertyAddress;

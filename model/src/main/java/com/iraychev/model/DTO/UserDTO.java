@@ -1,5 +1,6 @@
 package com.iraychev.model.DTO;
 
+import com.iraychev.model.entities.Image;
 import com.iraychev.model.enums.UserRole;
 
 import lombok.Getter;
@@ -17,5 +18,6 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String email;
+    private Image profileImage;
     private Set<UserRole> roles;
 }
