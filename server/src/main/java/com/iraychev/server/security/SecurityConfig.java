@@ -29,6 +29,7 @@ public class SecurityConfig{
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("ADMIN", "RENTER", "PROPERTY_OWNER")
                         .requestMatchers("/booking-api/users").permitAll()
+                        .requestMatchers("/booking-api/listings").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults());
         return http.build();

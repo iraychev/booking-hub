@@ -31,7 +31,6 @@ public class ListingService {
         return modelMapper.map(savedListing, ListingDTO.class);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     public List<ListingDTO> getAllListings() {
         List<Listing> listings = listingRepository.findAll();
         return listings.stream()
