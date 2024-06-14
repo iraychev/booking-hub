@@ -73,10 +73,8 @@ public class BookingService {
             return null;
         }
         Booking existingBooking = bookingOptional.get();
-        existingBooking.setStartDate(bookingDTO.getStartDate());
-        existingBooking.setNightsToStay(bookingDTO.getNightsToStay());
-        existingBooking.setPrice(bookingDTO.getPrice());
 
+        modelMapper.map(BookingDTO.class, existingBooking);
         Booking updatedBooking = bookingRepository.save(existingBooking);
         return modelMapper.map(updatedBooking, BookingDTO.class);
     }

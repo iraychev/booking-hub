@@ -42,19 +42,18 @@ public class ListingService {
         Optional<Listing> listingOptional = listingRepository.findById(listingId);
         return listingOptional.map(listing -> modelMapper.map(listing, ListingDTO.class)).orElse(null);
     }
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('PROPERTY_OWNER') and @userSecurityService.canAccessListing(principal, #listingId))")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('PROPERTY_OWNER') or @userSecurityService.canAccessListing(authentication.getPrincipal().username, #listingId))")
     public ListingDTO updateListingById(UUID listingId, ListingDTO listingDTO) {
         Optional<Listing> listingOptional = listingRepository.findById(listingId);
         if (listingOptional.isPresent()) {
             Listing existingListing = listingOptional.get();
-            existingListing.setTitle(listingDTO.getTitle());
-            existingListing.setDescription(listingDTO.getDescription());
+            modelMapper.map(listingDTO, existingListing);
             Listing updatedListing = listingRepository.save(existingListing);
             return modelMapper.map(updatedListing, ListingDTO.class);
         }
         return null;
     }
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('PROPERTY_OWNER') and @userSecurityService.canAccessListing(principal, #listingId))")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('PROPERTY_OWNER') or @userSecurityService.canAccessListing(authentication.getPrincipal().getUsername(), #listingId))")
     public boolean deleteListingById(UUID listingId) {
         Optional<Listing> listingOptional = listingRepository.findById(listingId);
         if (listingOptional.isPresent()) {

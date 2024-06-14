@@ -38,7 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .map(Enum::name)
                 .toList();
 
-        logger.info("User details loaded successfully for username: {}. OD: {} Roles: {}", username, user.getId(), roles);
+        logger.info("User details loaded successfully for username: {}. ID: {} Roles: {}", username, user.getId(), roles);
 
         return new CustomUserDetails(user.getId(), user.getUsername(), user.getPassword(), AuthorityUtils.createAuthorityList(roles.toArray(new String[0])));
     }
