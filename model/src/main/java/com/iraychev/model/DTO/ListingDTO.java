@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ public class ListingDTO {
     private User user;
     private String title;
     private String description;
-    private List<Image> images;
+    private List<Image> images = new ArrayList<>();
     private String propertyAddress;
     private double price;
     private List<Amenity> amenities;

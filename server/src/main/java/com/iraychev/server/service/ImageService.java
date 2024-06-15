@@ -21,7 +21,7 @@ public class ImageService {
 
     public Image save(MultipartFile file) throws IOException {
         Image image = new Image();
-        image.setName(file.getOriginalFilename());
+        image.setName(UUID.randomUUID().toString() + "_" +file.getOriginalFilename());
         image.setType(file.getContentType());
         image.setData(file.getBytes());
         return imageRepository.save(image);
