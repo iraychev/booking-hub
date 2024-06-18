@@ -40,7 +40,7 @@ public class BookingService {
     private boolean cannotMakeBooking(BookingDTO bookingDTO) {
         LocalDate endDate = bookingDTO.getStartDate().plusDays(bookingDTO.getNightsToStay() - 1);
 
-        List<Booking> existingBookings = bookingRepository.findByListingId(bookingDTO.getListing().getId());
+        List<Booking> existingBookings = bookingRepository.findAllByListingId(bookingDTO.getListing().getId());
 
         for (Booking existingBooking : existingBookings) {
             LocalDate existingEndDate = existingBooking.getStartDate().plusDays(existingBooking.getNightsToStay() - 1);
@@ -63,7 +63,6 @@ public class BookingService {
         return bookingOptional.map(booking -> modelMapper.map(booking, BookingDTO.class)).orElse(null);
     }
     @PreAuthorize("hasRole('ADMIN') or (hasRole('RENTER') and @userSecurityService.canAccessBooking(principal, #bookingId))")
-
     public BookingDTO updateBookingById(UUID bookingId, BookingDTO bookingDTO) {
         if(cannotMakeBooking(bookingDTO)){
             throw new BookingDateOverlapException("Booking date overlaps with existing booking/s");
@@ -80,7 +79,6 @@ public class BookingService {
     }
 
     @PreAuthorize("hasRole('ADMIN') or (hasRole('RENTER') and @userSecurityService.canAccessBooking(principal, #bookingId))")
-
     public boolean deleteBookingById(UUID bookingId) {
         Optional<Booking> bookingOptional = bookingRepository.findById(bookingId);
         if (bookingOptional.isPresent()) {
@@ -88,5 +86,12 @@ public class BookingService {
             return true;
         }
         return false;
+    }
+
+    public List<BookingDTO> geAlltByListingId(UUID listingId) {
+        List<Booking> bookings = bookingRepository.findAllByListingId(listingId);
+        return bookings.stream()
+                .map(booking -> modelMapper.map(booking, BookingDTO.class))
+                .collect(Collectors.toList());
     }
 }
