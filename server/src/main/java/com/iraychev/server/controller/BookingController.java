@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/booking-api/bookings")
-public class BookingController implements Controller<BookingDTO>{
+public class BookingController implements Controller<BookingDTO> {
     private final BookingService bookingService;
 
     @Autowired
@@ -29,17 +29,31 @@ public class BookingController implements Controller<BookingDTO>{
     @GetMapping
     public ResponseEntity<List<BookingDTO>> getAll() {
         List<BookingDTO> bookings = bookingService.getAllBookings();
+
+        if (bookings.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
 
     @GetMapping("/{bookingId}")
     public ResponseEntity<BookingDTO> getById(@PathVariable UUID bookingId) {
         BookingDTO bookingDTO = bookingService.getBookingById(bookingId);
-        if (bookingDTO != null) {
-            return new ResponseEntity<>(bookingDTO, HttpStatus.OK);
-        } else {
+
+        if (bookingDTO == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(bookingDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/listing/{listingId}")
+    public ResponseEntity<List<BookingDTO>> geAlltByListingId(@PathVariable UUID listingId) {
+        List<BookingDTO> bookings = bookingService.geAlltByListingId(listingId);
+
+        if (bookings.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
 
     @PutMapping("/{bookingId}")
