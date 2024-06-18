@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Data
@@ -39,4 +40,11 @@ public class User {
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles = new HashSet<>();
+    @Column(name = "joined_date", nullable = false, updatable = false)
+    private LocalDateTime joinedDate = LocalDateTime.now();
+
+    @PrePersist
+    protected void onCreate() {
+        joinedDate = LocalDateTime.now();
+    }
 }

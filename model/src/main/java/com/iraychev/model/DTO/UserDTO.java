@@ -6,6 +6,7 @@ import com.iraychev.model.enums.UserRole;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,4 +21,6 @@ public class UserDTO {
     private String email;
     private Image profileImage;
     private Set<UserRole> roles;
+    private LocalDateTime joinedDate;
+
 }
