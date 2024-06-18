@@ -20,9 +20,6 @@ public class Booking {
     private UUID id;
 
     @ManyToOne
-    private User owner;
-
-    @ManyToOne
     private User renter;
 
     @ManyToOne

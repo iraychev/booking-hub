@@ -25,6 +25,6 @@ public class UserSecurityService {
 
     public boolean canAccessBooking(String username, UUID bookingId) {
         Optional<Booking> booking = bookingRepository.findById(bookingId);
-        return booking.map(value -> value.getOwner().getUsername().equals(username)).orElse(false);
+        return booking.map(value -> value.getListing().getUser().getUsername().equals(username)).orElse(false);
     }
 }

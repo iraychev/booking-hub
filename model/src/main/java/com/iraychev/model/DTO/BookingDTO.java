@@ -11,7 +11,6 @@ import java.util.UUID;
 public class BookingDTO {
 
     private UUID id;
-    private UserDTO owner;
     private UserDTO renter;
     private Listing listing;
     private LocalDate startDate;
