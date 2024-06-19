@@ -22,6 +22,7 @@ public class BookingController implements Controller<BookingDTO> {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody BookingDTO bookingDTO) {
+
         BookingDTO createdBooking = bookingService.createBooking(bookingDTO);
         return new ResponseEntity<>(createdBooking, HttpStatus.CREATED);
     }
@@ -47,8 +48,8 @@ public class BookingController implements Controller<BookingDTO> {
     }
 
     @GetMapping("/listing/{listingId}")
-    public ResponseEntity<List<BookingDTO>> geAlltByListingId(@PathVariable UUID listingId) {
-        List<BookingDTO> bookings = bookingService.geAlltByListingId(listingId);
+    public ResponseEntity<List<BookingDTO>> geAllByListingId(@PathVariable UUID listingId) {
+        List<BookingDTO> bookings = bookingService.geAllByListingId(listingId);
 
         if (bookings.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

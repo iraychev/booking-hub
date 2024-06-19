@@ -88,7 +88,7 @@ public class BookingService {
         return false;
     }
 
-    public List<BookingDTO> geAlltByListingId(UUID listingId) {
+    public List<BookingDTO> geAllByListingId(UUID listingId) {
         List<Booking> bookings = bookingRepository.findAllByListingId(listingId);
         return bookings.stream()
                 .map(booking -> modelMapper.map(booking, BookingDTO.class))

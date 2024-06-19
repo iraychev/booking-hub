@@ -3,11 +3,12 @@ package com.iraychev.model.DTO;
 import com.iraychev.model.entities.Listing;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Getter @Setter
+@Getter @Setter @ToString
 public class BookingDTO {
 
     private UUID id;
