@@ -33,4 +33,4 @@ build/
 .vscode/
 /docker-compose up.sh
 /.env
-/docker-compose rebuild app only
+/docker-compose rebuild app only.sh
