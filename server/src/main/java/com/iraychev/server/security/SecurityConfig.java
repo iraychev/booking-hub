@@ -2,6 +2,7 @@ package com.iraychev.server.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -38,15 +39,10 @@ public class SecurityConfig{
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/booking-api/login").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user/**").hasAnyRole("ADMIN", "RENTER", "PROPERTY_OWNER")
-                        .requestMatchers("/booking-api/users").permitAll()
-                        .requestMatchers("/booking-api/listings").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/booking-api/login").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/booking-api/listings").permitAll()
                         .anyRequest().authenticated())
-
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 

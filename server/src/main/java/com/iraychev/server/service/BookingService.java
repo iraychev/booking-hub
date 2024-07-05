@@ -54,6 +54,7 @@ public class BookingService {
         return false;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public List<BookingDTO> getAllBookings() {
         List<Booking> bookings = bookingRepository.findAll();
         return bookings.stream()

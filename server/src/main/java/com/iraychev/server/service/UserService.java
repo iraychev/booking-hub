@@ -38,6 +38,7 @@ public class UserService {
         return modelMapper.map(savedUser, UserDTO.class);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
@@ -51,6 +52,7 @@ public class UserService {
         return userOptional.map(user -> modelMapper.map(user, UserDTO.class)).orElse(null);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or (authentication.getPrincipal().getId() == #userId)")
     public UserDTO getUserById(UUID userId) {
         Optional<User> userOptional = userRepository.findById(userId);
         return userOptional.map(user -> modelMapper.map(user, UserDTO.class)).orElse(null);

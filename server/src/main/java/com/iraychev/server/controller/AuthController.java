@@ -32,15 +32,4 @@ public class AuthController {
             throw new UsernameNotFoundException("invalid user request..!!");
         }
     }
-
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/booking-api/ping")
-    public String test() {
-        try {
-            return "Welcome";
-        } catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
 }
