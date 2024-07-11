@@ -53,9 +53,12 @@ public class ListingService {
             return null;
         }
         Listing existingListing = listingOptional.get();
-        if(!listingDTO.getImages().isEmpty()){
-            List<UUID> oldImageIds = existingListing.getImages().stream().map(Image::getId).collect(Collectors.toList());
-            imageRepository.deleteAllByIdInBatch(oldImageIds);
+        if (listingDTO.getImages() != null && !listingDTO.getImages().isEmpty()) {
+            existingListing.getImages().clear();
+
+            for (Image image : listingDTO.getImages()) {
+                existingListing.getImages().add(image);
+            }
         }
         modelMapper.map(listingDTO, existingListing);
         Listing updatedListing = listingRepository.save(existingListing);
