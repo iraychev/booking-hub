@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.iraychev</groupId>
-    <artifactId>booking</artifactId>
+    <artifactId>booking-hub</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
-
+    <name>BookingHub</name>
     <modules>
         <module>model</module>
         <module>server</module>
