@@ -23,13 +23,21 @@ public class AuthController {
     private JwtService jwtService;
 
     @PostMapping("/booking-api/login")
-    public JwtResponseDTO AuthenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
-        if(authentication.isAuthenticated()){
+    public JwtResponseDTO authenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword())
+        );
+
+        if (authentication.isAuthenticated()) {
+            String token = jwtService.generateToken(authRequestDTO.getUsername());
+            long expirationTimeInSeconds = jwtService.getExpirationTimeInSeconds();
+
             return JwtResponseDTO.builder()
-                    .accessToken(jwtService.GenerateToken(authRequestDTO.getUsername())).build();
+                    .accessToken(token)
+                    .expiresIn(expirationTimeInSeconds)
+                    .build();
         } else {
-            throw new UsernameNotFoundException("invalid user request..!!");
+            throw new UsernameNotFoundException("Invalid user request!");
         }
     }
 }
