@@ -12,9 +12,4 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleBookingOverlapException(BookingDateOverlapException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
-
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<String> handleGeneralException() {
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
-//    }
 }
