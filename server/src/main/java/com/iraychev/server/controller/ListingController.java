@@ -29,17 +29,19 @@ public class ListingController implements Controller<ListingDTO> {
 
 
     @GetMapping
-    public ResponseEntity<Page<ListingDTO>> getAll(
+    public ResponseEntity<Page<ListingDTO>> getByPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        Page<ListingDTO> listings = listingService.getAllListings(page, size);
+        Page<ListingDTO> listings = listingService.getListingsByPage(page, size);
         return new ResponseEntity<>(listings, HttpStatus.OK);
     }
 
-    @Override
+    @GetMapping("/get-all")
     public ResponseEntity<List<ListingDTO>> getAll() {
-        return null;
+        List<ListingDTO> listings = listingService.getAllListings();
+        return new ResponseEntity<>(listings, HttpStatus.OK);
     }
+
 
     @GetMapping("/{listingId}")
     public ResponseEntity<ListingDTO> getById(@PathVariable UUID listingId) {

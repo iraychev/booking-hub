@@ -23,13 +23,11 @@ public class ListingService {
 
     private final ListingRepository listingRepository;
     private final ModelMapper modelMapper;
-    private final ImageRepository imageRepository;
 
     @Autowired
-    public ListingService(ListingRepository listingRepository, ModelMapper modelMapper, ImageRepository imageRepository) {
+    public ListingService(ListingRepository listingRepository, ModelMapper modelMapper) {
         this.listingRepository = listingRepository;
         this.modelMapper = modelMapper;
-        this.imageRepository = imageRepository;
     }
 
     @PreAuthorize("hasRole('ADMIN') or (hasRole('PROPERTY_OWNER'))")
@@ -39,10 +37,17 @@ public class ListingService {
         return modelMapper.map(savedListing, ListingDTO.class);
     }
 
-    public Page<ListingDTO> getAllListings(int page, int size) {
+    public Page<ListingDTO> getListingsByPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Listing> listingsPage = listingRepository.findAll(pageable);
         return listingsPage.map(listing -> modelMapper.map(listing, ListingDTO.class));
+    }
+
+    public List<ListingDTO> getAllListings() {
+        List<Listing> listings = listingRepository.findAll();
+        return listings.stream()
+                .map(listing -> modelMapper.map(listing, ListingDTO.class))
+                .collect(Collectors.toList());
     }
 
     public ListingDTO getListingById(UUID listingId) {
