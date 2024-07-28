@@ -7,6 +7,9 @@ import com.iraychev.server.repository.ImageRepository;
 import com.iraychev.server.repository.ListingRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +31,7 @@ public class ListingService {
         this.modelMapper = modelMapper;
         this.imageRepository = imageRepository;
     }
+
     @PreAuthorize("hasRole('ADMIN') or (hasRole('PROPERTY_OWNER'))")
     public ListingDTO createListing(ListingDTO listingDTO) {
         Listing listing = modelMapper.map(listingDTO, Listing.class);
@@ -35,17 +39,17 @@ public class ListingService {
         return modelMapper.map(savedListing, ListingDTO.class);
     }
 
-    public List<ListingDTO> getAllListings() {
-        List<Listing> listings = listingRepository.findAll();
-        return listings.stream()
-                .map(listing -> modelMapper.map(listing, ListingDTO.class))
-                .collect(Collectors.toList());
+    public Page<ListingDTO> getAllListings(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Listing> listingsPage = listingRepository.findAll(pageable);
+        return listingsPage.map(listing -> modelMapper.map(listing, ListingDTO.class));
     }
 
     public ListingDTO getListingById(UUID listingId) {
         Optional<Listing> listingOptional = listingRepository.findById(listingId);
         return listingOptional.map(listing -> modelMapper.map(listing, ListingDTO.class)).orElse(null);
     }
+
     @PreAuthorize("hasRole('ADMIN') or ((hasRole('PROPERTY_OWNER') and @userSecurityService.canAccessListing(authentication.getPrincipal().getUsername(), #listingId)))")
     public ListingDTO updateListingById(UUID listingId, ListingDTO listingDTO) {
         Optional<Listing> listingOptional = listingRepository.findById(listingId);
@@ -65,6 +69,7 @@ public class ListingService {
         return modelMapper.map(updatedListing, ListingDTO.class);
 
     }
+
     @PreAuthorize("hasRole('ADMIN') or ((hasRole('PROPERTY_OWNER') and @userSecurityService.canAccessListing(authentication.getPrincipal().getUsername(), #listingId)))")
     public boolean deleteListingById(UUID listingId) {
         Optional<Listing> listingOptional = listingRepository.findById(listingId);

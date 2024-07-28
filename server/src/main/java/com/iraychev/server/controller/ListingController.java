@@ -3,6 +3,7 @@ package com.iraychev.server.controller;
 import com.iraychev.model.DTO.ListingDTO;
 import com.iraychev.server.service.ListingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/booking-api/listings")
-public class ListingController implements Controller<ListingDTO>{
+public class ListingController implements Controller<ListingDTO> {
     private final ListingService listingService;
 
     @Autowired
@@ -26,10 +27,18 @@ public class ListingController implements Controller<ListingDTO>{
         return new ResponseEntity<>(createdListing, HttpStatus.CREATED);
     }
 
+
     @GetMapping
-    public ResponseEntity<List<ListingDTO>> getAll() {
-        List<ListingDTO> listings = listingService.getAllListings();
+    public ResponseEntity<Page<ListingDTO>> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<ListingDTO> listings = listingService.getAllListings(page, size);
         return new ResponseEntity<>(listings, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<ListingDTO>> getAll() {
+        return null;
     }
 
     @GetMapping("/{listingId}")
