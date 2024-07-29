@@ -28,11 +28,18 @@ public class ListingController implements Controller<ListingDTO> {
     }
 
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<ListingDTO>> getAllByUserId(@PathVariable UUID userId) {
+        List<ListingDTO> listings = listingService.getAllByUserId(userId);
+        return new ResponseEntity<>(listings, HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity<Page<ListingDTO>> getByPage(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Page<ListingDTO> listings = listingService.getListingsByPage(page, size);
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String search) {
+        Page<ListingDTO> listings = listingService.getListingsByPage(page, size, search);
         return new ResponseEntity<>(listings, HttpStatus.OK);
     }
 

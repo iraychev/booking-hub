@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,9 +38,28 @@ public class ListingService {
         return modelMapper.map(savedListing, ListingDTO.class);
     }
 
-    public Page<ListingDTO> getListingsByPage(int page, int size) {
+    public List<ListingDTO> getAllByUserId(UUID userId) {
+        Optional<List<Listing>> listingsOptional = listingRepository.findAllByUserId(userId);
+        if (listingsOptional.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<Listing> listings = listingsOptional.get();
+        return listings.stream()
+                .map(listing -> modelMapper.map(listing, ListingDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    public Page<ListingDTO> getListingsByPage(int page, int size, String searchTerm) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Listing> listingsPage = listingRepository.findAll(pageable);
+        Page<Listing> listingsPage;
+
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            listingsPage = listingRepository.findByTitleContainingIgnoreCaseOrPropertyAddressContainingIgnoreCase(
+                    searchTerm, searchTerm, pageable);
+        } else {
+            listingsPage = listingRepository.findAll(pageable);
+        }
+
         return listingsPage.map(listing -> modelMapper.map(listing, ListingDTO.class));
     }
 
