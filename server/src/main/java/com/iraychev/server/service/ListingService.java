@@ -3,7 +3,6 @@ package com.iraychev.server.service;
 import com.iraychev.model.DTO.ListingDTO;
 import com.iraychev.model.entities.Listing;
 import com.iraychev.model.entities.Image;
-import com.iraychev.server.repository.ImageRepository;
 import com.iraychev.server.repository.ListingRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
