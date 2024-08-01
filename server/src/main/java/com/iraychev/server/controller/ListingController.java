@@ -28,7 +28,7 @@ public class ListingController implements Controller<ListingDTO> {
     }
 
 
-    @GetMapping("/{userId}")
+    @GetMapping("/by-user/{userId}")
     public ResponseEntity<List<ListingDTO>> getAllByUserId(@PathVariable UUID userId) {
         List<ListingDTO> listings = listingService.getAllByUserId(userId);
         return new ResponseEntity<>(listings, HttpStatus.OK);
@@ -50,7 +50,7 @@ public class ListingController implements Controller<ListingDTO> {
     }
 
 
-    @GetMapping("/{listingId}")
+    @GetMapping("/by-listing/{listingId}")
     public ResponseEntity<ListingDTO> getById(@PathVariable UUID listingId) {
         ListingDTO listingDTO = listingService.getListingById(listingId);
         if (listingDTO != null) {
@@ -60,7 +60,7 @@ public class ListingController implements Controller<ListingDTO> {
         }
     }
 
-    @PutMapping("/{listingId}")
+    @PutMapping("/by-listing/{listingId}")
     public ResponseEntity<?> update(@PathVariable UUID listingId, @RequestBody ListingDTO listingDTO) {
         ListingDTO updatedListing = listingService.updateListingById(listingId, listingDTO);
         if (updatedListing != null) {
@@ -70,7 +70,7 @@ public class ListingController implements Controller<ListingDTO> {
         }
     }
 
-    @DeleteMapping("/{listingId}")
+    @DeleteMapping("/by-listing/{listingId}")
     public ResponseEntity<Void> delete(@PathVariable UUID listingId) {
         if (listingService.deleteListingById(listingId)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
