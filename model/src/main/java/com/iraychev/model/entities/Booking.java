@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="bookings")
+@Table(name = "bookings")
 public class Booking {
 
     @Id

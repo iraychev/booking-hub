@@ -21,7 +21,7 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder){
+    public UserService(UserRepository userRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -53,6 +53,7 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(userId);
         return userOptional.map(user -> modelMapper.map(user, UserDTO.class)).orElse(null);
     }
+
     @PreAuthorize("hasRole('ADMIN') or (authentication.getPrincipal().getId() == #userId)")
     public UserDTO updateUserById(UUID userId, UserDTO userDTO) {
         Optional<User> userOptional = userRepository.findById(userId);
@@ -67,6 +68,7 @@ public class UserService {
         }
         return null;
     }
+
     @PreAuthorize("hasRole('ADMIN') or (authentication.getPrincipal().getId() == #userId)")
     public boolean deleteUserById(UUID userId) {
 

@@ -29,7 +29,7 @@ public class BookingService {
     @PreAuthorize("hasRole('ADMIN') or (hasRole('RENTER'))")
     public BookingDTO createBooking(BookingDTO bookingDTO) {
 
-        if(cantMakeBooking(bookingDTO)){
+        if (cantMakeBooking(bookingDTO)) {
             throw new BookingDateOverlapException("Booking date overlaps with existing booking/s");
         }
         Booking booking = modelMapper.map(bookingDTO, Booking.class);

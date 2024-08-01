@@ -11,8 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 public class ListingDTO {
+
     private UUID id;
     private User user;
     private String title;

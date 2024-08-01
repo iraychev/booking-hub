@@ -9,13 +9,14 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationBeansConfig {
 
     @Bean
-    public ModelMapper modelMapper(){
+    public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setSkipNullEnabled(true);
         return modelMapper;
     }
+
     @Bean
-    public UserValidator userValidator(){
+    public UserValidator userValidator() {
         return new UserValidator();
     }
 }

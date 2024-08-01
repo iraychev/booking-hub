@@ -8,7 +8,9 @@ import lombok.ToString;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 public class BookingDTO {
 
     private UUID id;

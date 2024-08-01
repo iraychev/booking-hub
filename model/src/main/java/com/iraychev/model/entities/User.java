@@ -34,7 +34,7 @@ public class User {
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name ="image_id", referencedColumnName = "id")
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
     private Image profileImage;
 
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)

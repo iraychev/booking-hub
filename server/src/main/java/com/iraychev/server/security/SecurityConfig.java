@@ -1,4 +1,5 @@
 package com.iraychev.server.security;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +25,7 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class SecurityConfig{
+public class SecurityConfig {
 
     @Autowired
     JwtAuthFilter jwtAuthFilter;
@@ -36,9 +37,9 @@ public class SecurityConfig{
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers(HttpMethod.POST,"/booking-api/login").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/booking-api/listings").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/booking-api/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/booking-api/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/booking-api/listings").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/booking-api/users").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
@@ -59,10 +60,12 @@ public class SecurityConfig{
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();

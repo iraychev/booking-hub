@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
-@Getter @Setter
+@Getter
+@Setter
 public class UserDTO {
 
     private UUID id;
@@ -22,5 +23,4 @@ public class UserDTO {
     private Image profileImage;
     private Set<UserRole> roles;
     private LocalDateTime joinedDate;
-
 }

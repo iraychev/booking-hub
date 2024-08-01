@@ -13,10 +13,11 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/booking-api/users")
-public class UserController implements Controller<UserDTO>{
+public class UserController implements Controller<UserDTO> {
 
     private final UserService userService;
     private final UserValidator userValidator;
+
     @Autowired
     public UserController(UserService userService, UserValidator userValidator) {
         this.userService = userService;
