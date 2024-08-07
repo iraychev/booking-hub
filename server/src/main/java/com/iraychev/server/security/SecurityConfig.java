@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(HttpMethod.POST, "/booking-api/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/booking-api/listings").permitAll()
+                        .requestMatchers(HttpMethod.HEAD, "/booking-api/listings").permitAll()
                         .requestMatchers(HttpMethod.POST, "/booking-api/users").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
