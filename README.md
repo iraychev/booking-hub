@@ -15,8 +15,8 @@
 1. **Clone the repository:**
 
    ```bash
-   git clone github.com/iraychev/booking
-   cd booking
+   git clone https://github.com/iraychev/booking-hub
+   cd booking-hub
    
 2. **Configure PostgreSQL Database:**
 
